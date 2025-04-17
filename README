@@ -1,11 +1,7 @@
 Github Repository for April Loy's fall '24 & Spring '25 independent study
 
-In order to study the racial disparity in local pollution, this code analyzes a large corpus of data from the TEMPO satellite. It has long been known that in many cities in the US, pollution is more strongly correlated with race than with income (i.e between a poor Black neighborhood and a rich white neighborhood, we would expect to see more pollution in the former based on previous studies.
+In order to study the racial disparity in local pollution, this code analyzes a large corpus of data from the TEMPO satellite
 
-However, many overhead satellites had too coarse of a resolution to do neighborhood-level analysis throghout the US, so many previous studies requried expensive, permanent, in-situ measurement tools. That is, until NASA launched the TEMPO satellite in summer of 2023, which had a much smaller pixel size, allowing pollution measurements to be taken from space, all across the US. TEMPO is in geostationary orbit above Turtle Island and Mexico (Mexico city to Northern Canada) and takes once-hourly scans of various pollutants. This study is concerned primarily with NO2 and HCHO (formaldehyde) pollution within cities across the US.
+TEMPO is in geostationary orbit above Turtle Island and Mexico (Mexico city to Northern Canada) and takes once-daily scans of various pollutants
 
-This codebase takes as input the name of a city in the US, and automatically queries the US census bureau API for race & income data, and the pyrsig API for the NASA TEMPO satellite for pollution data. It then combines these data, creating maps of pollution, race, and income by census tract in the requested US city, as well as scatter plots that show the relationship between race & pollution and income & pollution.
-
-This project is in active development, and does not represent a final project. As such, there might be bugs, and certain parts might be under-commented
-
-This project is designed to be used by researchers, to make data analysis on pollution inequality in various cities throughout the US easier.
+This study is concerned primarily with NO2 and HCHO (formaldehyde) pollution within cities in New York state
