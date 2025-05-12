@@ -1,7 +1,50 @@
 Github Repository for April Loy's fall '24 & Spring '25 independent study
 
-In order to study the racial disparity in local pollution, this code analyzes a large corpus of data from the TEMPO satellite
+BACKGROUND:
 
-TEMPO is in geostationary orbit above Turtle Island and Mexico (Mexico city to Northern Canada) and takes once-daily scans of various pollutants
+In order to study the racial disparity in local pollution, this code analyzes a large corpus of data from the TEMPO satellite. It has long been known that in many cities in the US, pollution is more strongly correlated with race than with income (i.e between a poor Black neighborhood and a rich white neighborhood, we would expect to see more pollution in the former based on previous studies.
 
-This study is concerned primarily with NO2 and HCHO (formaldehyde) pollution within cities in New York state
+However, many overhead satellites had too coarse of a resolution to do neighborhood-level analysis throghout the US, so many previous studies requried expensive, permanent, in-situ measurement tools. That is, until NASA launched the TEMPO satellite in summer of 2023, which had a much smaller pixel size, allowing pollution measurements to be taken from space, all across the US. TEMPO is in geostationary orbit above Turtle Island and Mexico (Mexico city to Northern Canada) and takes once-hourly scans of various pollutants. This study is concerned primarily with NO2 and HCHO (formaldehyde) pollution within cities across the US.
+
+This codebase takes as input the name of a city in the US, and automatically queries the US census bureau API for race & income data, and the pyrsig API for the NASA TEMPO satellite for pollution data. It then combines these data, creating maps of pollution, race, and income by census tract in the requested US city, as well as scatter plots that show the relationship between race & pollution and income & pollution.
+
+This project is designed to be used by researchers, to make data analysis on pollution inequality in various cities throughout the US easier.
+
+USAGE:
+
+
+python3 analyze_pollution.py [city] [state] [start date] [end date]
+
+
+city: the city or metro area to be analyzed
+
+
+state: two-letter postal code of the city to be analyzed
+
+
+NOTE: because washington, D.C. isn’t in a state, put “DC” in the state field
+
+
+start/end date: the range of dates you would like to analyze in MM/DD/YY format. NOTE: the TEMPO satellite was launched in mid 2023, so requests before August 2023 will not work.
+
+
+HOW IT WORKS:
+
+
+first, the program downloads a shape file that contains borders for all cities throughout the US, as defined by the US census bureau.
+
+
+then, the input is analyzed. A dictionary is created which takes as input the state code, and returns a list of cities in that state shapefile. Then, the list of cities in that state is looped over to determine the closest match.
+
+
+Once the city is matched to the shapefile, the state’s census tracts are downloaded, and the census tracts are subsetted to just those within the selected city. The US census bureau api is queried to create a shape file of the selected city, with each census tract being a separate entry with its white percentage, and median income,
+
+
+Then, baronh’s pyrsig API is queried to download HCHO and NO2 above the queried city every mid-afternoon hour within the selected temporal range.
+
+
+Then, the data from the US census bureau and NASA are combined to create a single shape file, and several graphs are output showing the relationship between pollution, race, and income. The final shape file is also saved in the pollution_shape file folder.
+
+Example Outputs are included in the github repo, showing the final output graphs, and the shapefile with both pollution and demographic data for the city of Rochester, New York.
+
+Special Thank you to Barron H. Henderson, who maintains the API to interface with the TEMPO satelitte, and to professor Lee Murray at the University of Rochester, who advised me during the development of this project.

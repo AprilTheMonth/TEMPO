@@ -27,6 +27,8 @@ poll_location <- paste(folder, "pollution_shapefile/pollution.shp", sep="/")
 poll <- read_sf(poll_location)
 
 # Merge the two sources of data
+# Rochester, Albany, Syracuse, Buffalo, NYC
+# Phoenix, Arizona
 merged <- st_intersection(demo, poll)
 
 # Perform the statistical analysis on each source
@@ -43,3 +45,8 @@ ggsave(incomeNO2, file=paste(folder, "pollutionVsIncome.png", sep="/"))
 
 raceNO2 <- ggplot(merged) + geom_point(aes(x=WHITEPE, y=NO2, colour="NO2")) + geom_point(aes(x=WHITEPE, y=HCHO, colour="HCHO")) + scale_colour_manual(values=c("NO2"="black", "HCHO"="red"))
 ggsave(raceNO2, file=paste(folder, "pollutionVsRace.png", sep="/"))
+
+shp_outfile <- paste(folder, "combined_shapefile", sep="/")
+dir.create(shp_outfile)
+
+st_write(merged, paste(shp_outfile, "pollution_and_race.shp", sep="/"))

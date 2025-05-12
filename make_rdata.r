@@ -29,12 +29,14 @@ for ( f in seq_along(filesno2) ) {
 
 
   fin = filesno2[f]
-  id = nc_open(fin)
+  id = nc_open(fin, return_on_error=T)
 
   # TODO: make this resilient to the possibility of NO2 and HCHO files stored in different orders
   finhcho = fileshcho[f]
-  idhcho = nc_open(finhcho)
-
+  idhcho = nc_open(finhcho, return_on_error=T)
+  if(id$error == T || idhcho$error == T) {
+    next
+  }
   file_name_no_path <- str_split_i(fin, "/", 3)
   outfile <- sprintf("%s/RData/%s.RData", folder, substr(file_name_no_path, 1, nchar(file_name_no_path)-3))
 
